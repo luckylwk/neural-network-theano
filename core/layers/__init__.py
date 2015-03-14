@@ -1,4 +1,5 @@
 from .base import *
+from .input import *
 from .hidden import *
 from .convolutional import *
 from .pooling import *

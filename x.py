@@ -12,5 +12,6 @@ if __name__ == '__main__':
 
 	rng = np.random.RandomState(random_seed)
 	
-	l1 = HiddenLayer( layerInput=(1,1), n_in=10, n_out=20, verbose=True )
+	l0 = InputLayer()
+	l1 = HiddenLayer( layerInput=(1,1), verbose=True )
 

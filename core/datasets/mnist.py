@@ -1,6 +1,7 @@
 import gzip
 import cPickle
 import time
+import sys
 from math import sqrt
 
 
@@ -24,6 +25,9 @@ def fn_T_load_data_MNIST( path_to_file ):
 		f.close()
 	except:
 		print '\t\tFailure: FILE DOES NOT EXIST', sys.exc_info()[0]
+
+	# Reshape dimensions.
+	# ...
 
 	# Create Theano shared variables (for GPU processing)
 	test_set_x, test_set_y = fn_theano_gpu_shared_dataset(test_set)

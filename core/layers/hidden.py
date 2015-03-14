@@ -18,18 +18,24 @@ class HiddenLayer(Layer):
 	'''
 	Standard Hidden Layer
 	'''
-	def __init__( self, layerInput, n_in, n_out, activation=Sigmoid, W_in=None, b_in=None, use_bias=True, **kwargs ):
+	def __init__( self, layerInput, layerSize, activation=Sigmoid, **kwargs ):
 		super(HiddenLayer, self).__init__( layerInput=layerInput, name="Hidden Layer", **kwargs )
 		
 		self.activation = activation
-		
-		print self.activation.name
-		print self.name
+		self.layerSize = layerSize
+
+		if self.verbose: self.printVerbose()
 		# -------------------- #
 
-	# def get_output_shape( self ):
-	# 	raise NotImplementedError
-	# 	# -------------------- #
+	def fn_get_outputSizeFor( self, inputSize ):
+		return ( inputSize[0], self.layerSize )
+		# -------------------- #
+
+	def printVerbose( self ):
+		print '\t    --- Initialising {}'.format( self.name )
+		print '\t\tActivation fn.:      {}'.format( self.activation.name )
+		print '\t\tInput size:          {}'.format( self.input_shape )
+
 
 
 	# -------------------- #

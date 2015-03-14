@@ -18,7 +18,7 @@ class LogisticLayer(Layer):
 	'''
 	Standard Logistic Layer
 	'''
-	def __init__( self, layerInput, n_in, n_out, activation=SoftMax, W_in=None, b_in=None, use_bias=True, **kwargs ):
+	def __init__( self, layerInput, activation=SoftMax, **kwargs ):
 		super(HiddenLayer, self).__init__( layerInput=layerInput, name="Logistic Layer", **kwargs )
 		
 		self.activation = activation

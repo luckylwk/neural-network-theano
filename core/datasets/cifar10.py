@@ -2,6 +2,7 @@ import os
 import sys
 import cPickle
 import time
+import sys
 from math import sqrt
 
 import numpy as np
