@@ -24,12 +24,13 @@ class InputLayer(Layer):
 		if self.verbose: self.printVerbose()
 		# -------------------- #
 
+
 	def printVerbose( self ):
 		'''
 		Function to print layer information. Usually overwritten per subclass.
 		'''
 		print '\t    --- Initialising {}'.format( self.name )
-		print '\t\tInput size:          {}'.format( self.input_shape )
+		print '\t\tInput size:          {}'.format( self.inputSize )
 		# -------------------- #
 
 	# -------------------- #

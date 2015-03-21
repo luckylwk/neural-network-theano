@@ -10,10 +10,8 @@ import theano
 sys.path.append('../') # theano folder path.
 
 from core.datasets import mnist
-from core.layers import InputLayer, HiddenLayer, Convolutional2DLayer, PoolingLayer
-
-
-
+from core.utils.activation import ReLU
+from core.layers import InputLayer, HiddenLayer, LogisticLayer, Convolutional2DLayer, PoolingLayer
 
 
 
@@ -22,31 +20,29 @@ if __name__ == '__main__':
 	# Set a random seed.
 	random_seed = 1234
 
-	# LOAD the DATA.
-	datasets = mnist.fn_T_load_data_MNIST( path_to_file='../../../_DATA/mnist.pkl.gz' )
-	# print type(datasets[0][0]) # <class 'theano.tensor.sharedvar.TensorSharedVariable'> - datasets[0][0].shape.eval()
+	# # LOAD the DATA.
+	# datasets = mnist.fn_T_load_data_MNIST( path_to_file='../../../_DATA/mnist.pkl.gz' )
+	# # print type(datasets[0][0]) # <class 'theano.tensor.sharedvar.TensorSharedVariable'> - datasets[0][0].shape.eval()
 
 	# ...
 	rng = np.random.RandomState(random_seed)
-	X = theano.tensor.matrix('x') # <class 'theano.tensor.var.TensorVariable'>
-	y = theano.tensor.ivector('y')
+	# X = theano.tensor.matrix('x') # <class 'theano.tensor.var.TensorVariable'>
+	# y = theano.tensor.ivector('y')
 
-	# Create the LAYERS.
-	# Input layer.
-	LAYER_0 = InputLayer( layerInput=( 100, 1*28*28 ), verbose=True )
-	# Hidden layer, dense
-	LAYER_1 = HiddenLayer( layerInput=LAYER_0, layerSize=1024, verbose=True )
-	print LAYER_1.input_layer
-	# Hidden layer, dense
-	LAYER_2 = HiddenLayer( layerInput=LAYER_1, layerSize=1024, verbose=True )
-	print LAYER_2.input_layer
-	# Output layer.
+
+	print '\n\n'
+	NN_0 = InputLayer( layerInput=( 100, 1*28*28 ), verbose=True )
+	NN_1 = HiddenLayer( layerInput=NN_0, layerSize=1024, verbose=True )
+	NN_2 = HiddenLayer( layerInput=NN_1, activation=ReLU, layerSize=1024, verbose=True )
+	NN_X = LogisticLayer( layerInput=NN_2, layerSize=10, verbose=True )
+
+
+
+	print '\n\n'
+	CNN_0 = InputLayer( layerInput=( 100, 1, 28, 28 ), verbose=True )
+	CNN_1 = Convolutional2DLayer( layerInput=CNN_0, kernels=8, kernelSize=(7,7), kernelStride=1, verbose=True )
+	CNN_2 = PoolingLayer( layerInput=CNN_1, downSample=(2,2), verbose=True )
+	# normalisation layer
 
 	# Create the MODEL.
 
-
-	CNN_0 = InputLayer( layerInput=( 100, 1, 28, 28 ), verbose=True )
-	CNN_1 = Convolutional2DLayer( layerInput=CNN_0, kernels=8, kernelSize=(7,7), kernelStride=(1,1), verbose=True )
-	print CNN_1.input_layer
-	CNN_2 = PoolingLayer( layerInput=CNN_1, downSample=(2,2), verbose=True )
-	print CNN_2.input_layer
