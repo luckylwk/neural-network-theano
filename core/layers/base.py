@@ -15,6 +15,7 @@ class Layer(object):
 	Single layer of a neural network.
 	Basic functions that can be overwritten by specific subclasses.
 	'''
+	
 	def __init__( self, layerInput, name=None, verbose=False ):
 		# If the input is a tuple this layer is the first in the network.
 		if isinstance(layerInput, tuple):

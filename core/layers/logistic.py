@@ -3,7 +3,7 @@ import numpy as np
 import theano
 
 from ..utils.activation import *
-
+from ..utils import weights
 from .base import Layer
 
 
@@ -24,10 +24,8 @@ class LogisticLayer(Layer):
 		self.activation = activation
 		self.layerSize = layerSize
 
-		self.W = np.zeros( (self.inputSize[1], self.layerSize) )
+		self.W = self._set_params( init=weights.Uniform(), shape=(self.inputSize[1], self.layerSize), name="W" )
 		self.b = np.zeros( (1,self.layerSize) )
-		print self.W.shape
-		print self.b.shape
 		
 		if self.verbose: self.printVerbose()
 		# -------------------- #
@@ -39,8 +37,7 @@ class LogisticLayer(Layer):
 
 
 	def fn_get_outputFor( self, input=None, *args, **kwargs ):
-		raise NotImplementedError
-		# self.p_y_given_x = activation.fn( theano.tensor.dot(layer_input, self.W) + self.b )
+		return activation.fn( theano.tensor.dot( input, self.W ) + self.b )
 		# -------------------- #
 
 

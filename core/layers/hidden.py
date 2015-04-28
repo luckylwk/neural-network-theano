@@ -26,8 +26,7 @@ class HiddenLayer(Layer):
 
 		self.W = self._set_params( init=weights.Uniform(), shape=(self.inputSize[1], self.layerSize), name="W" )
 		self.b = np.zeros( (1,self.layerSize) )
-		print self.W.shape.eval() # self.W.get_value()
-		print self.b.shape
+		# print self.W.shape.eval() # self.W.get_value()
 
 		if self.verbose: self.printVerbose()
 		# -------------------- #
@@ -39,16 +38,20 @@ class HiddenLayer(Layer):
 
 	
 	def fn_get_outputFor( self, input=None, *args, **kwargs ):
-		raise NotImplementedError
+		if input.ndim > 2:
+			raise RuntimeError("need to flatten input")
+		else:
+			zeta = theano.tensor.dot( input, self.W )
+			if self.b is not None:
+				zeta = zeta + self.b.dimshuffle('x', 0)
+			# done, return activations based on zeta.
+			return self.activation.fn(zeta)
+
+		# raise NotImplementedError
 		# if input.ndim > 2:
 		# 	# if the input has more than two dimensions, flatten it into a
 		# 	# batch of feature vectors.
 		# 	input = input.flatten(2)
-
-		# activation = T.dot(input, self.W)
-		# if self.b is not None:
-		# 	activation = activation + self.b.dimshuffle('x', 0)
-		# return self.nonlinearity(activation)
 		# -------------------- #
 
 

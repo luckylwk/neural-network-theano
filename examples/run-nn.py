@@ -30,10 +30,10 @@ if __name__ == '__main__':
 	# y = theano.tensor.ivector('y')
 
 
-	print '\n\n'
+	print '\n'
 	NN_0 = InputLayer( layerInput=( 100, 1*28*28 ), verbose=True )
-	NN_1 = HiddenLayer( layerInput=NN_0, layerSize=1024, verbose=True )
-	NN_2 = HiddenLayer( layerInput=NN_1, activation=ReLU, layerSize=1024, verbose=True )
+	NN_1 = HiddenLayer( layerInput=NN_0, activation=ReLU, layerSize=1024, verbose=True )
+	NN_2 = HiddenLayer( layerInput=NN_1, activation=ReLU, layerSize=512, verbose=True )
 	NN_X = LogisticLayer( layerInput=NN_2, layerSize=10, verbose=True )
 
 
