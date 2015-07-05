@@ -12,49 +12,41 @@ __all__ = [
 # Layer base class
 class Layer(object):
 	'''
-	Single layer of a neural network.
+	Single base-layer of a 'Neural Network'.
 	Basic functions that can be overwritten by specific subclasses.
 	'''
 	
-	def __init__( self, layerInput, name=None, verbose=False ):
-		# If the input is a tuple this layer is the first in the network.
-		if isinstance(layerInput, tuple):
-			self.inputSize = layerInput
-			self.inputLayer = None
-		# If the input is a layer, get its output-size.
-		else:
-			self.inputSize = layerInput._get_outputSize()
-			self.inputLayer = layerInput
+	def __init__( self, inputDim=None, outputDim=None, name=None, verbose=False ):
+		#
+		self.inputLayer = None
+		self.input = None
+		self.output = None
+		# Store the dimensions of this layer.
+		# They are both always tuples with at least 2-dimensions (number-of-samples, number-of-features)
+		self.inputDim = inputDim
+		self.outputDim = outputDim
+		
+		# Initialise the parameters as an empty array.
+		self.params = []
+		
 		# Store the name.
 		self.name = name
 		self.verbose = verbose
 		# -------------------- #
 
 
-	def _get_outputSize( self ):
-		return self.fn_get_outputSizeFor(self.inputSize)
-		# -------------------- #
-
-
-	def fn_get_outputSizeFor( self, inputSize ):
+	def _setInputDimensions( self ):
 		'''
-		Default return is the its own input-size.
-		This assumes the layer does not transform the input.
+		To be specified for each specific layer-subclass.
 		'''
-		return inputSize
-		# -------------------- #
-
-
-	def _get_output( self, input=None, *args, **kwargs ):
-		if self.inputLayer == None:
-			raise RuntimeError('You cannot get output for the input-layer.')
+		if self.inputLayer is not None:
+			self.inputDim = self.inputLayer.outputDim
 		else:
-			thisInput = self.inputLayer.get_output( input=input, *args, **kwargs )
-			return self.fn_get_outputFor( input=thisInput, *args, **kwargs )
+			raise Exception("\n\t*** ERROR: No inputLayer available!")
 		# -------------------- #
 
 
-	def fn_get_outputFor( self, input=None, *args, **kwargs ):
+	def _calcOutputDimensions( self ):
 		'''
 		To be specified for each specific layer-subclass.
 		'''
@@ -62,24 +54,20 @@ class Layer(object):
 		# -------------------- #
 
 
-	def _set_params( self, init, shape, name ):
+	def _calcOutput( self ):
 		'''
-		Function to set the layer parameters.
+		To be specified for each specific layer-subclass.
 		'''
-		if hasattr(init, '__call__'):
-			arr = init(shape)
-			if not isinstance(arr, np.ndarray):
-				raise RuntimeError("base._set_params: needs to be numpy array")
-
-			return theano.shared( arr, name=name, borrow=True )
+		raise NotImplementedError
 		# -------------------- #
 
 
-	def printVerbose( self ):
+	def _initParams( self ):
 		'''
-		Function to print layer information. Usually overwritten per layer-subclass.
+		To be specified for each specific layer-subclass.
 		'''
-		print '\t    --- Initialising {}'.format( self.name )
+		raise NotImplementedError
 		# -------------------- #
+
 
 	# -------------------- #

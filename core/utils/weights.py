@@ -34,14 +34,12 @@ class Init(object):
 
 
 # -------------------- #
-
 class Uniform(Init):
 	
 	def __init__(self, range=None):
 		self.range = range
 
 	def sample(self, shape):
-		
 		if self.range is None:
 			# no range given, use the Glorot et al. approach.
 			# This code makes some assumptions about the meanings of
@@ -60,6 +58,48 @@ class Uniform(Init):
 			range = self.range
 
 		return np.asarray( np.random.uniform( low=range[0], high=range[1], size=shape), dtype=theano.config.floatX )
-	
 	# -------------------- #
+
+
+# -------------------- #
+class Normal(Init):
+    """
+    Sample initial weights from the Gaussian distribution.
+    Initial weight parameters are sampled from N(mean, std).
+    Parameters
+    ----------
+    std : float
+        Std of initial parameters.
+    mean : float
+        Mean of initial parameters.
+    """
+    def __init__(self, std=0.01, mean=0.0):
+        self.std = std
+        self.mean = mean
+
+    def sample(self, shape):
+        return np.asarray( np.random.normal(self.mean, self.std, size=shape), dtype=theano.config.floatX )
+    # -------------------- #
+
+
+# -------------------- #
+class Constant(Init):
+    """
+    Initialize weights with constant value.
+    Parameters
+    ----------
+     val : float
+        Constant value for weights.
+    """
+    def __init__(self, val=0.0):
+        self.val = val
+
+    def sample(self, shape):
+        return np.asarray( np.ones(shape) * self.val, dtype=theano.config.floatX )
+    # -------------------- #
+
+
+
+
+
 
